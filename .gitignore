@@ -155,3 +155,6 @@ __pycache__/
 # Cspell files
 .cspell.json
 .cspellcache
+
+# Test data directory
+data/
