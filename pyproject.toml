@@ -20,6 +20,13 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Topic :: Database",
 ]
+dependencies = [
+    "attrs>=24.2",
+    "docopt>=0.6",
+    "pint>=0.24",
+    "pyodbc>=5.1",
+    "uncertainties>=3.2",
+]
 keywords = ["FreeCAD", "KiCAD"]
 license = { text = "BSD-3-Clause" }
 maintainers = [{ name = "Michael Cummings", email = "mgcummings@yahoo.com" }]
@@ -34,6 +41,12 @@ test = [
     "pytest-bdd-ng>=2.1",
 ]
 
+[project.scripts]
+"dm-gen" = "dm_generate:cli"
+
+[project.entry-points.cli]
+dbase = "dm_generate.database"
+
 [project.urls]
 Homepage = "https://github.com/dragon-mobile/dm_generate"
 Issues = "https://github.com/dragon-mobile/dm_generate/issues"
@@ -41,6 +54,10 @@ Repository = "https://github.com/dragon-mobile/dm_generate"
 
 [tool.pytest.ini_options]
 addopts = "--codeblocks --cov=dm_generate --import-mode=importlib --pyargs dm_generate"
+consider_namespace_packages = true
+minversion = "8.3"
+pythonpath = "src"
+testpaths = "tests"
 
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
@@ -73,12 +90,8 @@ exclude = [
     "venv",
 ]
 include = ["pyproject.toml", "src/**/*.py"]
-
-# Same as Black.
 line-length = 80
 indent-width = 4
-
-# Assume Python 3.8
 target-version = "py312"
 
 [tool.ruff.lint]
@@ -87,34 +100,23 @@ target-version = "py312"
 # McCabe complexity (`C901`) by default.
 select = ["E4", "E7", "E9", "F", "N"]
 ignore = []
-
 # Allow fix for all enabled rules (when `--fix`) is provided.
 fixable = ["ALL"]
 unfixable = []
-
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [tool.ruff.format]
-# Like Black, use double quotes for strings.
 quote-style = "double"
-
-# Like Black, indent with spaces, rather than tabs.
 indent-style = "space"
-
-# Like Black, respect magic trailing commas.
 skip-magic-trailing-comma = false
-
-# Like Black, automatically detect the appropriate line ending.
 line-ending = "auto"
-
 # Enable auto-formatting of code examples in docstrings. Markdown,
 # reStructuredText code/literal blocks and doctests are all supported.
 #
 # This is currently disabled by default, but it is planned for this
 # to be opt-out in the future.
 docstring-code-format = true
-
 # Set the line length limit used when formatting code snippets in
 # docstrings.
 #
@@ -122,4 +124,25 @@ docstring-code-format = true
 # enabled.
 docstring-code-line-length = "dynamic"
 
+[tool.setuptools.packages.find]
+where = ["src/"]
+include = ["dm_generate", "dm_generate.*"]
+
+[tool.setuptools]
+include-package-data = true
+
 [tool.setuptools_scm]
+
+[tool.typos]
+
+[tool.typos.default]
+locale = "en-us"
+
+[tool.typos.default.extend-words]
+pn = "pn"
+licence = "licence"
+
+[tool.typos.files]
+extend-exclude = ["data/*.csv"]
+ignore-files = true
+ignore-vcs = true
